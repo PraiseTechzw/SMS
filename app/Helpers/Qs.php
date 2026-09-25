@@ -80,9 +80,13 @@ class Qs
 
     public static function hash($id)
     {
-        $date = date('dMY').'PMS';
-        $hash = new Hashids($date, 14);
-        return $hash->encode($id);
+        if (extension_loaded('gmp') || extension_loaded('bcmath')) {
+            $date = date('dMY').'PMS';
+            $hash = new Hashids($date, 14);
+            return $hash->encode($id);
+        }
+
+        return self::fallbackHash($id);
     }
 
     public static function getUserRecord($remove = [])
@@ -109,10 +113,36 @@ class Qs
 
     public static function decodeHash($str, $toString = true)
     {
-        $date = date('dMY').'PMS';
-        $hash = new Hashids($date, 14);
-        $decoded = $hash->decode($str);
+        if (extension_loaded('gmp') || extension_loaded('bcmath')) {
+            $date = date('dMY').'PMS';
+            $hash = new Hashids($date, 14);
+            $decoded = $hash->decode($str);
+            return $toString ? implode(',', $decoded) : $decoded;
+        }
+
+        $decoded = self::decodeFallbackHash($str);
         return $toString ? implode(',', $decoded) : $decoded;
+    }
+
+    protected static function fallbackHash($id)
+    {
+        $value = (string) $id;
+        $signature = substr(hash_hmac('sha256', $value, date('dMY').'PMS'), 0, 16);
+        return rtrim(strtr(base64_encode($value.'.'.$signature), '+/', '-_'), '=');
+    }
+
+    protected static function decodeFallbackHash($hash)
+    {
+        $encoded = strtr($hash, '-_', '+/');
+        $encoded .= str_repeat('=', (4 - strlen($encoded) % 4) % 4);
+        $payload = base64_decode($encoded, true);
+
+        if ($payload === false || ! preg_match('/^(\d+)\.([a-f0-9]{16})$/', $payload, $matches)) {
+            return [];
+        }
+
+        $signature = substr(hash_hmac('sha256', $matches[1], date('dMY').'PMS'), 0, 16);
+        return hash_equals($signature, $matches[2]) ? [(int) $matches[1]] : [];
     }
 
     public static function userIsTeamAccount()

@@ -13,7 +13,8 @@
     @include('partials.inc_top')
 </head>
 
-<body class="app-shell {{ in_array(Route::currentRouteName(), ['payments.invoice', 'marks.tabulation', 'marks.show', 'ttr.manage', 'ttr.show']) ? 'sidebar-xs' : '' }}">
+<body class="app-shell {{ in_array(Route::currentRouteName(), ['payments.invoice', 'marks.tabulation', 'marks.show', 'ttr.manage', 'ttr.show']) ? 'sidebar-xs' : '' }}"
+      style="--sms-navy: {{ Qs::getSettingSafe('theme_primary', '#18283f') }}; --sms-navy-deep: {{ Qs::getSettingSafe('theme_secondary', '#101c30') }}; --sms-teal: {{ Qs::getSettingSafe('theme_accent', '#16b8a6') }}; --sms-teal-dark: {{ Qs::getSettingSafe('theme_accent_dark', '#0f9b90') }};">
 
 @include('partials.top_menu')
 <div class="page-content">

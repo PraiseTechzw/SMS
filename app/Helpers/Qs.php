@@ -260,6 +260,11 @@ class Qs
     {
         return Setting::where('type', $type)->first()->description;
     }
+    public static function getSettingSafe($type, $default = null)
+    {
+        $setting = Setting::where('type', $type)->first();
+        return $setting ? $setting->description : $default;
+    }
 
     public static function getCurrentSession()
     {
@@ -302,6 +307,10 @@ class Qs
            case 'P' : return 'primary';
            case 'PN' : return 'pre_nursery';
            case 'C' : return 'creche';
+           case 'ECD' : return 'ecd';
+           case 'A' : return 'advanced_level';
+           case 'U' : return 'university';
+           case 'PG' : return 'postgraduate';
        }
         return $class_type;
     }

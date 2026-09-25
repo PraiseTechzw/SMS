@@ -16,19 +16,26 @@ class MyClassesTableSeeder extends Seeder
     public function run()
     {
         DB::table('my_classes')->delete();
-        $ct = ClassType::pluck('id')->all();
+        $ct = ClassType::pluck('id', 'code');
 
         $data = [
-            ['name' => 'Nursery 1', 'class_type_id' => $ct[2]],
-            ['name' => 'Nursery 2', 'class_type_id' => $ct[2]],
-            ['name' => 'Nursery 3', 'class_type_id' => $ct[2]],
-            ['name' => 'Primary 1', 'class_type_id' => $ct[3]],
-            ['name' => 'Primary 2', 'class_type_id' => $ct[3]],
-            ['name' => 'JSS 2', 'class_type_id' => $ct[4]],
-            ['name' => 'JSS 3', 'class_type_id' => $ct[4]],
-            ['name' => 'SSS 1', 'class_type_id' => $ct[5]],
-            ['name' => 'SSS 2', 'class_type_id' => $ct[5]],
-            ['name' => 'SSS 3', 'class_type_id' => $ct[5]],
+            ['name' => 'ECD A', 'class_type_id' => $ct['ECD']],
+            ['name' => 'ECD B', 'class_type_id' => $ct['ECD']],
+            ['name' => 'Grade 1', 'class_type_id' => $ct['P']],
+            ['name' => 'Grade 2', 'class_type_id' => $ct['P']],
+            ['name' => 'Grade 3', 'class_type_id' => $ct['P']],
+            ['name' => 'Grade 4', 'class_type_id' => $ct['P']],
+            ['name' => 'Grade 5', 'class_type_id' => $ct['P']],
+            ['name' => 'Grade 6', 'class_type_id' => $ct['P']],
+            ['name' => 'Grade 7', 'class_type_id' => $ct['P']],
+            ['name' => 'Form 1', 'class_type_id' => $ct['J']],
+            ['name' => 'Form 2', 'class_type_id' => $ct['J']],
+            ['name' => 'Form 3', 'class_type_id' => $ct['S']],
+            ['name' => 'Form 4', 'class_type_id' => $ct['S']],
+            ['name' => 'Lower 6', 'class_type_id' => $ct['A']],
+            ['name' => 'Upper 6', 'class_type_id' => $ct['A']],
+            ['name' => 'Undergraduate', 'class_type_id' => $ct['U']],
+            ['name' => 'Postgraduate', 'class_type_id' => $ct['PG']],
             ];
 
         DB::table('my_classes')->insert($data);

@@ -25,6 +25,12 @@ class SettingController extends Controller
          $d['s'] = $s->flatMap(function($s){
             return [$s->type => $s->description];
         });
+         $d['s'] = array_merge([
+             'theme_primary' => '#18283f',
+             'theme_secondary' => '#101c30',
+             'theme_accent' => '#16b8a6',
+             'theme_accent_dark' => '#0f9b90',
+         ], $d['s']->toArray());
         return view('pages.super_admin.settings', $d);
     }
 

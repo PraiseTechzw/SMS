@@ -25,6 +25,10 @@ class SettingUpdate extends FormRequest
             'address' => 'required|string|min:15',
             'system_email' => 'sometimes|nullable|email',
             'lock_exam' => 'required',
+            'theme_primary' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'theme_secondary' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'theme_accent' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'theme_accent_dark' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'logo' => 'sometimes|nullable|image|mimes:jpeg,gif,png,jpg|max:2048',
 
         ];

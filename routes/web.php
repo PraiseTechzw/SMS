@@ -145,6 +145,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('exams', 'ExamController');
         Route::resource('dorms', 'DormController');
         Route::resource('payments', 'PaymentController');
+        Route::resource('books', 'BookController');
+        Route::resource('book_requests', 'BookRequestController');
+        Route::resource('attendance', 'AttendanceController')->except(['show']);
+        Route::resource('notices', 'NoticeController')->except(['show']);
 
     });
 
@@ -172,5 +176,3 @@ Route::group(['namespace' => 'MyParent','middleware' => 'my_parent',], function(
     Route::get('/my_children', 'MyController@children')->name('my_children');
 
 });
-        Route::resource('books', 'BookController');
-        Route::resource('book_requests', 'BookRequestController');

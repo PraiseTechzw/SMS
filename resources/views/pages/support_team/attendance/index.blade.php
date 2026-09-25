@@ -1,0 +1,5 @@
+@extends('layouts.master')
+@section('page_title', 'Attendance')
+@section('content')
+<div class="card"><div class="card-header header-elements-inline"><h5 class="card-title">Attendance records</h5><a href="{{ route('attendance.create') }}" class="btn btn-primary">Record attendance</a></div><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>Date</th><th>Student</th><th>Status</th><th>Remarks</th><th>Action</th></tr></thead><tbody>@forelse($attendance as $record)<tr><td>{{ optional($record->attendance_date)->format('d M Y') }}</td><td>{{ optional($record->student)->name ?: 'Unknown student' }}</td><td><span class="badge badge-{{ $record->status == 'present' ? 'success' : ($record->status == 'late' ? 'warning' : 'danger') }}">{{ ucfirst($record->status) }}</span></td><td>{{ $record->remarks ?: '—' }}</td><td><a href="{{ route('attendance.edit', $record) }}" class="btn btn-sm btn-light">Edit</a></td></tr>@empty<tr><td colspan="5" class="text-center text-muted py-4">No attendance records have been recorded.</td></tr>@endforelse</tbody></table></div></div>
+@endsection

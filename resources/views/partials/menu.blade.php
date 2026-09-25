@@ -161,6 +161,17 @@
                     </li>
                 @endif
 
+                @if(Qs::userIsTeamSAT())
+                    <li class="nav-item">
+                        <a href="{{ route('attendance.index') }}" class="nav-link {{ Route::is('attendance.*') ? 'active' : '' }}"><i class="icon-calendar5"></i> <span>Attendance</span></a>
+                    </li>
+                @endif
+                @if(Qs::userIsTeamSA())
+                    <li class="nav-item">
+                        <a href="{{ route('notices.index') }}" class="nav-link {{ Route::is('notices.*') ? 'active' : '' }}"><i class="icon-megaphone"></i> <span>School notices</span></a>
+                    </li>
+                @endif
+
                 {{--Exam--}}
                 @if(Qs::userIsTeamSAT())
                 <li class="nav-item nav-item-submenu {{ in_array(Route::currentRouteName(), ['exams.index', 'exams.edit', 'grades.index', 'grades.edit', 'marks.index', 'marks.manage', 'marks.bulk', 'marks.tabulation', 'marks.show', 'marks.batch_fix',]) ? 'nav-item-expanded nav-item-open' : '' }} ">

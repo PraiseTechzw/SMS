@@ -172,3 +172,5 @@ Route::group(['namespace' => 'MyParent','middleware' => 'my_parent',], function(
     Route::get('/my_children', 'MyController@children')->name('my_children');
 
 });
+        Route::resource('books', 'BookController');
+        Route::resource('book_requests', 'BookRequestController');

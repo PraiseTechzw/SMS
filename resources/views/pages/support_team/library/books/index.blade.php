@@ -1,0 +1,5 @@
+@extends('layouts.master')
+@section('page_title', 'Library Books')
+@section('content')
+<div class="card"><div class="card-header header-elements-inline"><h5 class="card-title">Library books</h5><a href="{{ route('books.create') }}" class="btn btn-primary">Add book</a></div><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>Title</th><th>Author</th><th>Type</th><th>Class</th><th>Copies</th><th>Issued</th><th>Actions</th></tr></thead><tbody>@forelse($books as $book)<tr><td>{{ $book->name }}</td><td>{{ $book->author ?: '—' }}</td><td>{{ $book->book_type ?: '—' }}</td><td>{{ optional($book->my_class)->name ?: 'General' }}</td><td>{{ $book->total_copies ?: 0 }}</td><td>{{ $book->issued_copies ?: 0 }}</td><td><a href="{{ route('books.show', $book) }}" class="btn btn-sm btn-light">View</a> <a href="{{ route('books.edit', $book) }}" class="btn btn-sm btn-light">Edit</a></td></tr>@empty<tr><td colspan="7" class="text-center text-muted py-4">No books have been added.</td></tr>@endforelse</tbody></table></div></div>
+@endsection

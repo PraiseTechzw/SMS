@@ -1,0 +1,5 @@
+@extends('layouts.master')
+@section('page_title', 'Book Requests')
+@section('content')
+<div class="card"><div class="card-header header-elements-inline"><h5 class="card-title">Book requests</h5><a href="{{ route('book_requests.create') }}" class="btn btn-primary">Record request</a></div><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>Book</th><th>Requester</th><th>Start</th><th>End</th><th>Status</th><th>Actions</th></tr></thead><tbody>@forelse($requests as $request)<tr><td>{{ optional($request->book)->name ?: 'Book unavailable' }}</td><td>{{ optional($request->user)->name ?: '—' }}</td><td>{{ $request->start_date }}</td><td>{{ $request->end_date }}</td><td><span class="badge badge-{{ $request->status == 'returned' ? 'success' : ($request->status == 'rejected' ? 'danger' : 'warning') }}">{{ ucfirst($request->status ?: 'pending') }}</span></td><td><a href="{{ route('book_requests.edit', $request) }}" class="btn btn-sm btn-light">Update</a></td></tr>@empty<tr><td colspan="6" class="text-center text-muted py-4">No book requests have been recorded.</td></tr>@endforelse</tbody></table></div></div>
+@endsection

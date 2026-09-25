@@ -1,0 +1,14 @@
+@extends('layouts.master')
+@section('page_title', 'Administration Dashboard')
+@section('content')
+<div class="d-flex justify-content-between align-items-center mb-3"><div><h2 class="mb-1">{{ $role === 'super_admin' ? 'Super administrator' : 'Administrator' }} dashboard</h2><p class="text-muted mb-0">{{ $session }} operational overview</p></div><a href="{{ route('students.create') }}" class="btn btn-primary"><i class="icon-user-plus mr-1"></i>Admit student</a></div>
+<div class="row">
+    @foreach([['Students', $students, 'icon-users4', 'bg-primary-400'], ['Teachers', $teachers, 'icon-users2', 'bg-danger-400'], ['Parents', $parents, 'icon-user', 'bg-success-400'], ['Classes', $classes, 'icon-windows2', 'bg-indigo-400']] as $metric)
+        <div class="col-sm-6 col-xl-3"><div class="card card-body {{ $metric[3] }} has-bg-image"><div class="media"><div class="media-body"><h3 class="mb-0">{{ $metric[1] }}</h3><span class="text-uppercase font-size-xs font-weight-bold">{{ $metric[0] }}</span></div><i class="{{ $metric[2] }} icon-3x opacity-75"></i></div></div></div>
+    @endforeach
+</div>
+<div class="row">
+    <div class="col-lg-8"><div class="card"><div class="card-header header-elements-inline"><h5 class="card-title">Recently admitted students</h5>{!! Qs::getPanelOptions() !!}</div><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>Student</th><th>Class</th><th>Admission</th><th>Action</th></tr></thead><tbody>@forelse($recent_students as $student)<tr><td>{{ $student->user->name }}</td><td>{{ $student->my_class->name }}</td><td>{{ $student->adm_no }}</td><td><a href="{{ route('students.show', Qs::hash($student->id)) }}" class="btn btn-sm btn-light">View</a></td></tr>@empty<tr><td colspan="4" class="text-center text-muted">No students have been admitted yet.</td></tr>@endforelse</tbody></table></div></div></div>
+    <div class="col-lg-4"><div class="card"><div class="card-header"><h5 class="card-title">Management shortcuts</h5></div><div class="list-group list-group-flush"><a class="list-group-item list-group-item-action" href="{{ route('users.index') }}"><i class="icon-users4 mr-2"></i>Manage users</a><a class="list-group-item list-group-item-action" href="{{ route('classes.index') }}"><i class="icon-windows2 mr-2"></i>Manage classes</a><a class="list-group-item list-group-item-action" href="{{ route('subjects.index') }}"><i class="icon-pin mr-2"></i>Manage subjects</a><a class="list-group-item list-group-item-action" href="{{ route('exams.index') }}"><i class="icon-books mr-2"></i>Manage exams</a>@if($role === 'super_admin')<a class="list-group-item list-group-item-action" href="{{ route('settings') }}"><i class="icon-gear mr-2"></i>School settings</a>@endif</div></div><div class="card card-body"><h6>Academic catalogue</h6><p class="mb-0 text-muted">{{ $subjects }} subjects are configured across {{ $classes }} classes.</p></div></div>
+</div>
+@endsection

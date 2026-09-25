@@ -1,85 +1,51 @@
 <?php
+namespace App\Http\Controllers\SupportTeam;
 
-namespace App\Http\Controllers;
-
+use App\Book;
 use App\BookRequest;
+use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
 
 class BookRequestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        return view('pages.support_team.library.requests.index', ['requests' => BookRequest::with(['book', 'user'])->latest()->get()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('pages.support_team.library.requests.form', ['requestRecord' => new BookRequest(), 'books' => Book::orderBy('name')->get(), 'users' => User::whereIn('user_type', ['student', 'teacher'])->orderBy('name')->get()]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate(['book_id' => 'required|exists:books,id', 'user_id' => 'required|exists:users,id', 'start_date' => 'required|date', 'end_date' => 'required|date|after_or_equal:start_date', 'status' => 'nullable|in:pending,approved,returned,rejected']);
+        BookRequest::create($data + ['returned' => '0']);
+        return redirect()->route('book_requests.index')->with('flash_success', 'Book request recorded successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\BookRequest  $bookRequest
-     * @return \Illuminate\Http\Response
-     */
     public function show(BookRequest $bookRequest)
     {
-        //
+        return view('pages.support_team.library.requests.show', ['requestRecord' => $bookRequest->load(['book', 'user'])]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\BookRequest  $bookRequest
-     * @return \Illuminate\Http\Response
-     */
     public function edit(BookRequest $bookRequest)
     {
-        //
+        return view('pages.support_team.library.requests.form', ['requestRecord' => $bookRequest, 'books' => Book::orderBy('name')->get(), 'users' => User::whereIn('user_type', ['student', 'teacher'])->orderBy('name')->get()]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\BookRequest  $bookRequest
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, BookRequest $bookRequest)
     {
-        //
+        $data = $request->validate(['book_id' => 'required|exists:books,id', 'user_id' => 'required|exists:users,id', 'start_date' => 'required|date', 'end_date' => 'required|date|after_or_equal:start_date', 'status' => 'nullable|in:pending,approved,returned,rejected']);
+        $bookRequest->update($data + ['returned' => $data['status'] === 'returned' ? '1' : '0']);
+        return redirect()->route('book_requests.index')->with('flash_success', 'Book request updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\BookRequest  $bookRequest
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(BookRequest $bookRequest)
     {
-        //
+        $bookRequest->delete();
+        return redirect()->route('book_requests.index')->with('flash_success', 'Book request deleted successfully.');
     }
 }

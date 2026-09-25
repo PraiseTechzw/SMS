@@ -22,6 +22,7 @@
                                 <th>S/N</th>
                                 <th>Name</th>
                                 <th>Grade Type</th>
+                                <th>Scheme</th>
                                 <th>Range</th>
                                 <th>Remark</th>
                                 <th>Action</th>
@@ -32,7 +33,8 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $gr->name }}</td>
-                                    <td>{{ $gr->class_type_id ? $class_types->where('id', $gr->class_type_id)->first()->name : ''}}</td>
+                                    <td>{{ $gr->class_type_id ? optional($class_types->where('id', $gr->class_type_id)->first())->name : 'All class types'}}</td>
+                                    <td><span class="badge badge-light-primary">{{ strtoupper($gr->scheme ?: 'general') }}</span></td>
                                     <td>{{ $gr->mark_from.' - '.$gr->mark_to }}</td>
                                     <td>{{ $gr->remark }}</td>
                                     <td class="text-center">
@@ -92,6 +94,17 @@
                                          @foreach($class_types as $ct)
                                                 <option {{ old('class_type_id') == $ct->id ? 'selected' : '' }} value="{{ $ct->id }}">{{ $ct->name }}</option>
                                              @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="scheme" class="col-lg-3 col-form-label font-weight-semibold">Scheme</label>
+                                    <div class="col-lg-9">
+                                        <select class="form-control select" name="scheme" id="scheme" required>
+                                            <option value="general" {{ old('scheme', 'general') == 'general' ? 'selected' : '' }}>General</option>
+                                            <option value="zimsec" {{ old('scheme') == 'zimsec' ? 'selected' : '' }}>ZIMSEC</option>
+                                            <option value="university" {{ old('scheme') == 'university' ? 'selected' : '' }}>University</option>
                                         </select>
                                     </div>
                                 </div>

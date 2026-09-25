@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Grade;
 use App\Models\Mark;
 use App\Models\StudentRecord;
+use App\Models\ClassType;
 
 class MarkRepo
 {
@@ -12,18 +13,25 @@ class MarkRepo
     {
         if($total < 1) { return NULL; }
 
+        $classType = ClassType::find($class_type_id);
+        $scheme = $classType && in_array($classType->code, ['U', 'PG']) ? 'university' : 'zimsec';
         $grades = Grade::where(['class_type_id' => $class_type_id])->get();
 
         if($grades->count() > 0){
             $gr = $grades->where('mark_from', '<=', $total)->where('mark_to', '>=', $total);
-            return $gr->count() > 0 ? $gr->first() : $this->getGrade2($total);
+            if($gr->count() > 0) { return $gr->first(); }
         }
-        return $this->getGrade2($total);
+        return $this->getGrade2($total, $scheme);
     }
 
-    public function getGrade2($total)
+    public function getGrade2($total, $scheme = null)
     {
-        $grades = Grade::whereNull('class_type_id')->get();
+        $grades = Grade::whereNull('class_type_id');
+        if($scheme) {
+            $schemeGrades = (clone $grades)->where('scheme', $scheme)->get();
+            if($schemeGrades->count() > 0) { $grades = $schemeGrades; }
+            else { $grades = $grades->where(function($query) { $query->where('scheme', 'general')->orWhereNull('scheme'); })->get(); }
+        } else { $grades = $grades->get(); }
         if($grades->count() > 0){
             return $grades->where('mark_from', '<=', $total)->where('mark_to', '>=', $total)->first();
         }

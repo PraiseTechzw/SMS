@@ -16,6 +16,8 @@ class GradeUpdate extends FormRequest
     {
         return [
             'name' => 'required|string',
+            'scheme' => 'required|in:general,zimsec,university',
+            'class_type_id' => 'nullable|exists:class_types,id',
             'mark_from' => 'required|numeric',
             'mark_to' => 'required|numeric',
         ];

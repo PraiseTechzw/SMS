@@ -30,7 +30,7 @@
                     @foreach($valid_pins->chunk(4) as $chunk)
                         <div class="row">
                             @foreach($chunk as $vp)
-                                <div class="col-md-3">{{ $vp->code }}</div>
+                                <div class="col-md-3 mb-2"><div class="border rounded p-2 d-flex justify-content-between align-items-center"><code>{{ $vp->code }}</code><button type="button" class="btn btn-sm btn-light" onclick="navigator.clipboard.writeText('{{ $vp->code }}')" title="Copy PIN"><i class="icon-copy3"></i></button></div></div>
                             @endforeach
                         </div>
                     @endforeach

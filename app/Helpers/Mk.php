@@ -6,6 +6,7 @@ use App\Models\Exam;
 use App\Models\ExamRecord;
 use App\Models\Grade;
 use App\Models\Mark;
+use App\Models\ClassType;
 use Illuminate\Database\Eloquent\Collection;
 
 class Mk extends Qs
@@ -127,7 +128,14 @@ class Mk extends Qs
         $grades = Grade::where(['class_type_id' => $class_type_id])->orderBy('name')->get();
 
         if($grades->count() < 1){
-            $grades = Grade::whereNull('class_type_id')->orderBy('name')->get();
+            $classType = ClassType::find($class_type_id);
+            $scheme = $classType && in_array($classType->code, ['U', 'PG']) ? 'university' : 'zimsec';
+            $grades = Grade::whereNull('class_type_id')->where('scheme', $scheme)->orderBy('mark_from', 'desc')->get();
+            if($grades->count() < 1) {
+                $grades = Grade::whereNull('class_type_id')->where(function($query) {
+                    $query->where('scheme', 'general')->orWhereNull('scheme');
+                })->orderBy('mark_from', 'desc')->get();
+            }
         }
         return $grades;
     }

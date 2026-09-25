@@ -23,6 +23,10 @@ class ClassTypesTableSeeder extends Seeder
             ['name' => 'Primary', 'code' => 'P'],
             ['name' => 'Junior Secondary', 'code' => 'J'],
             ['name' => 'Senior Secondary', 'code' => 'S'],
+            ['name' => 'ECD (Early Childhood Development)', 'code' => 'ECD'],
+            ['name' => 'Advanced Level', 'code' => 'A'],
+            ['name' => 'University Undergraduate', 'code' => 'U'],
+            ['name' => 'University Postgraduate', 'code' => 'PG'],
         ];
 
         DB::table('class_types')->insert($data);

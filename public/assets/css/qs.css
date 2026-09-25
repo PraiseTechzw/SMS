@@ -321,3 +321,32 @@ body.app-shell {
         padding: 1rem;
     }
 }
+
+.theme-settings-panel {
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--sms-line);
+    border-radius: .7rem;
+    background: #fbfcfe;
+}
+
+.theme-settings-panel legend {
+    width: auto;
+    padding: 0 .45rem;
+    color: var(--sms-ink);
+    font-size: .9rem;
+}
+
+.theme-color-input {
+    width: 2.65rem;
+    height: 2.15rem;
+    padding: .15rem;
+    border: 1px solid var(--sms-line);
+    border-radius: .45rem;
+    background: #fff;
+    cursor: pointer;
+}
+
+.theme-settings-panel code {
+    color: var(--sms-muted);
+    font-size: .76rem;
+}

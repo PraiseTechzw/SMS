@@ -35,6 +35,10 @@ class SettingsTableSeeder extends Seeder
             ['type' => 'next_term_fees_n', 'description' => '25600'],
             ['type' => 'next_term_fees_s', 'description' => '15600'],
             ['type' => 'next_term_fees_c', 'description' => '1600'],
+            ['type' => 'theme_primary', 'description' => '#18283f'],
+            ['type' => 'theme_secondary', 'description' => '#101c30'],
+            ['type' => 'theme_accent', 'description' => '#16b8a6'],
+            ['type' => 'theme_accent_dark', 'description' => '#0f9b90'],
         ];
 
         DB::table('settings')->insert($data);

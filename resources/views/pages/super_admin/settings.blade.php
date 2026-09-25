@@ -93,11 +93,45 @@
                    <div class="form-group row">
                        <label class="col-lg-3 col-form-label font-weight-semibold">{{ $ct->name }}</label>
                        <div class="col-lg-9">
-                           <input class="form-control" value="{{ $s['next_term_fees_'.strtolower($ct->code)] }}" name="next_term_fees_{{ strtolower($ct->code) }}" placeholder="{{ $ct->name }}" type="text">
+                           <input class="form-control" value="{{ $s['next_term_fees_'.strtolower($ct->code)] ?? '' }}" name="next_term_fees_{{ strtolower($ct->code) }}" placeholder="{{ $ct->name }}" type="text">
                        </div>
                    </div>
                        @endforeach
                </fieldset>
+                    <hr class="divider">
+
+                    <fieldset class="theme-settings-panel">
+                        <legend><strong>Appearance &amp; theme</strong></legend>
+                        <p class="text-muted font-size-sm">Change the main colours without editing CSS. These settings work across ECD, primary, secondary, and university views.</p>
+                        <div class="form-group row align-items-center">
+                            <label class="col-lg-5 col-form-label font-weight-semibold">Primary colour</label>
+                            <div class="col-lg-7 d-flex align-items-center">
+                                <input name="theme_primary" value="{{ $s['theme_primary'] }}" type="color" class="theme-color-input mr-2" aria-label="Primary colour">
+                                <code>{{ $s['theme_primary'] }}</code>
+                            </div>
+                        </div>
+                        <div class="form-group row align-items-center">
+                            <label class="col-lg-5 col-form-label font-weight-semibold">Secondary colour</label>
+                            <div class="col-lg-7 d-flex align-items-center">
+                                <input name="theme_secondary" value="{{ $s['theme_secondary'] }}" type="color" class="theme-color-input mr-2" aria-label="Secondary colour">
+                                <code>{{ $s['theme_secondary'] }}</code>
+                            </div>
+                        </div>
+                        <div class="form-group row align-items-center">
+                            <label class="col-lg-5 col-form-label font-weight-semibold">Accent colour</label>
+                            <div class="col-lg-7 d-flex align-items-center">
+                                <input name="theme_accent" value="{{ $s['theme_accent'] }}" type="color" class="theme-color-input mr-2" aria-label="Accent colour">
+                                <code>{{ $s['theme_accent'] }}</code>
+                            </div>
+                        </div>
+                        <div class="form-group row align-items-center mb-0">
+                            <label class="col-lg-5 col-form-label font-weight-semibold">Accent hover colour</label>
+                            <div class="col-lg-7 d-flex align-items-center">
+                                <input name="theme_accent_dark" value="{{ $s['theme_accent_dark'] }}" type="color" class="theme-color-input mr-2" aria-label="Accent hover colour">
+                                <code>{{ $s['theme_accent_dark'] }}</code>
+                            </div>
+                        </div>
+                    </fieldset>
                     <hr class="divider">
 
                     {{--Logo--}}

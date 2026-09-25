@@ -33,6 +33,17 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="scheme" class="col-lg-3 col-form-label font-weight-semibold">Scheme</label>
+                            <div class="col-lg-9">
+                                <select class="form-control select" name="scheme" id="scheme" required>
+                                    <option value="general" {{ ($gr->scheme ?: 'general') == 'general' ? 'selected' : '' }}>General</option>
+                                    <option value="zimsec" {{ $gr->scheme == 'zimsec' ? 'selected' : '' }}>ZIMSEC</option>
+                                    <option value="university" {{ $gr->scheme == 'university' ? 'selected' : '' }}>University</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label class="col-lg-3 col-form-label font-weight-semibold">Mark From <span class="text-danger">*</span></label>
                             <div class="col-lg-3">
                                 <input name="mark_from" min="0" max="100" value="{{ $gr->mark_from }}" required type="number" class="form-control" placeholder="0">

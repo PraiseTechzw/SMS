@@ -131,6 +131,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('select_year/{id}', 'MarkController@year_selector')->name('marks.year_selector');
             Route::post('select_year/{id}', 'MarkController@year_selected')->name('marks.year_select');
             Route::get('show/{id}/{year}', 'MarkController@show')->name('marks.show');
+            Route::get('report-card/{id}/{year}', 'MarkController@report_card')->name('marks.report_card');
             Route::get('print/{id}/{exam_id}/{year}', 'MarkController@print_view')->name('marks.print');
 
         });

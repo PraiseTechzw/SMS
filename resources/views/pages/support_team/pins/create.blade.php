@@ -8,6 +8,7 @@
         </div>
 
         <div class="card-body">
+            <div class="alert alert-info border-0"><strong>Secure result access:</strong> each PIN can be used up to six times and is linked to the student result when verified.</div>
             <div class="row">
                 <div class="col-md-6 offset-md-3">
                     <form method="post" action="{{ route('pins.store') }}">

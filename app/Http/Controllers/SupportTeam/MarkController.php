@@ -92,6 +92,33 @@ class MarkController extends Controller
         return view('pages.support_team.marks.show.index', $d);
     }
 
+    public function report_card($student_id, $year)
+    {
+        if(Auth::user()->id != $student_id && !Qs::userIsTeamSAT() && !Qs::userIsMyChild($student_id, Auth::user()->id)){
+            return redirect(route('dashboard'))->with('pop_error', __('msg.denied'));
+        }
+        if(Mk::examIsLocked() && !Qs::userIsTeamSA()){
+            Session::put('marks_url', route('marks.report_card', [Qs::hash($student_id), $year]));
+            if(!$this->checkPinVerified($student_id)){
+                return redirect()->route('pins.enter', Qs::hash($student_id));
+            }
+        }
+        if(!$this->verifyStudentExamYear($student_id, $year)){
+            return $this->noStudentRecord();
+        }
+        $d['marks'] = $this->exam->getMark(['student_id' => $student_id, 'year' => $year]);
+        $d['exam_records'] = $this->exam->getRecord(['student_id' => $student_id, 'year' => $year]);
+        $d['exams'] = $this->exam->getExam(['year' => $year])->sortBy('term');
+        $d['sr'] = $this->student->getRecord(['user_id' => $student_id])->first();
+        $d['my_class'] = $mc = $this->my_class->getMC(['id' => $d['exam_records']->first()->my_class_id])->first();
+        $d['class_type'] = $this->my_class->findTypeByClass($mc->id);
+        $d['subjects'] = $this->my_class->findSubjectByClass($mc->id);
+        $d['year'] = $year;
+        $d['student_id'] = $student_id;
+        $d['school'] = Setting::all()->flatMap(function($setting){ return [$setting->type => $setting->description]; });
+        return view('pages.support_team.marks.report_card', $d);
+    }
+
     public function print_view($student_id, $exam_id, $year)
     {
         /* Prevent Other Students/Parents from viewing Result of others */

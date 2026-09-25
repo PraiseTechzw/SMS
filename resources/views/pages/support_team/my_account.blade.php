@@ -9,6 +9,10 @@
         </div>
 
         <div class="card-body">
+            <div class="d-flex align-items-center mb-4 p-3 rounded" style="background:linear-gradient(135deg, rgba(24,40,63,.08), rgba(22,184,166,.12));">
+                <img id="profile-preview" src="{{ $my->photo }}" alt="{{ $my->name }}" class="rounded-circle mr-3" style="width:72px;height:72px;object-fit:cover;">
+                <div><h5 class="mb-1">{{ $my->name }}</h5><span class="text-muted">{{ ucwords(str_replace('_', ' ', $my->user_type)) }}</span><div class="small text-muted">Keep your contact details and profile photo up to date.</div></div>
+            </div>
             <ul class="nav nav-tabs nav-tabs-highlight">
                 <li class="nav-item"><a href="#change-pass" class="nav-link active" data-toggle="tab">Change Password</a></li>
                 @if(Qs::userIsPTA())
@@ -114,7 +118,7 @@
                                     <div class="form-group row">
                                         <label for="address" class="col-lg-3 col-form-label font-weight-semibold">Change Photo </label>
                                         <div class="col-lg-9">
-                                            <input  accept="image/*" type="file" name="photo" class="form-input-styled" data-fouc>
+                                            <input accept="image/*" type="file" name="photo" class="form-input-styled" data-fouc onchange="document.getElementById('profile-preview').src=window.URL.createObjectURL(this.files[0])">
                                         </div>
                                     </div>
 

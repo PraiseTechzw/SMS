@@ -1,7 +1,13 @@
 <div class="navbar navbar-expand-md navbar-dark app-navbar">
     <div class="app-brand mr-md-5">
         <a href="{{ route('dashboard') }}" class="d-inline-flex align-items-center">
-            <span class="app-brand-mark"><i class="icon-graduation2"></i></span>
+            <span class="app-brand-mark">
+                @if(Qs::getSetting('logo'))
+                    <img src="{{ Qs::getSetting('logo') }}" alt="School logo" style="max-width:34px;max-height:34px;object-fit:contain;">
+                @else
+                    <i class="icon-graduation2"></i>
+                @endif
+            </span>
             <span class="app-brand-name">{{ Qs::getSystemName() }}</span>
         </a>
     </div>

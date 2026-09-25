@@ -37,6 +37,9 @@ class StudentRecordCreate extends FormRequest
             'section_id' => 'required',
             'my_parent_id' => 'sometimes|nullable',
             'dorm_id' => 'sometimes|nullable',
+            'combination_level' => 'sometimes|nullable|in:o_level,a_level',
+            'selected_subjects' => 'sometimes|array',
+            'selected_subjects.*' => 'integer|exists:subjects,id',
         ];
     }
 
@@ -51,6 +54,7 @@ class StudentRecordCreate extends FormRequest
             'lga_id' => 'LGA',
             'bg_id' => 'Blood Group',
             'my_parent_id' => 'Parent',
+            'combination_level' => 'Combination level',
         ];
     }
 

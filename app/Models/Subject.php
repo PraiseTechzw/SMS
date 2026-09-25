@@ -18,4 +18,9 @@ class Subject extends Eloquent
     {
         return $this->belongsTo(User::class, 'teacher_id');
     }
+
+    public function student_combinations()
+    {
+        return $this->hasMany(StudentSubjectCombination::class);
+    }
 }

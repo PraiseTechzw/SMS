@@ -197,6 +197,25 @@
                             </div>
                         </div>
                     </div>
+                    @php($selectedCombinations = $sr->subject_combinations)
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <label for="combination_level">ZIMSEC subject level:</label>
+                            <select name="combination_level" id="combination_level" class="form-control select">
+                                <option value="">Not applicable</option>
+                                <option value="o_level" {{ optional($selectedCombinations->first())->level == 'o_level' ? 'selected' : '' }}>O-Level</option>
+                                <option value="a_level" {{ optional($selectedCombinations->first())->level == 'a_level' ? 'selected' : '' }}>A-Level</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="selected_subjects">Subject combination <small class="text-muted">(hold Ctrl/Cmd to select multiple)</small></label>
+                            <select name="selected_subjects[]" id="selected_subjects" class="form-control select-search" multiple>
+                                @foreach($subjects as $subject)
+                                    <option value="{{ $subject->id }}" {{ $selectedCombinations->where('subject_id', $subject->id)->count() ? 'selected' : '' }}>{{ $subject->name }} — {{ $subject->my_class->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </fieldset>
 
             </form>

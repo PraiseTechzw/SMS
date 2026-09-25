@@ -67,6 +67,11 @@ class PaymentRepo
         return $year ? $this->getRecord(['student_id' => $st_id, 'year' => $year]) : $this->getRecord(['student_id' => $st_id]);
     }
 
+    public function getAllMyPRsForStudents(array $student_ids)
+    {
+        return PaymentRecord::whereIn('student_id', $student_ids)->with(['payment', 'student', 'receipt'])->orderByDesc('year')->latest()->get();
+    }
+
     public function getRecord($data, $order = 'year', $dir = 'desc')
     {
         return PaymentRecord::orderBy($order, $dir)->where($data)->with('payment');

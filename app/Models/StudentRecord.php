@@ -38,4 +38,9 @@ class StudentRecord extends Eloquent
     {
         return $this->belongsTo(Dorm::class);
     }
+
+    public function subject_combinations()
+    {
+        return $this->hasMany(StudentSubjectCombination::class, 'student_id', 'user_id')->with('subject');
+    }
 }

@@ -35,6 +35,9 @@ class StudentRecordUpdate extends FormRequest
             'nal_id' => 'required',
             'my_parent_id' => 'sometimes|nullable',
             'dorm_id' => 'sometimes|nullable',
+            'combination_level' => 'sometimes|nullable|in:o_level,a_level',
+            'selected_subjects' => 'sometimes|array',
+            'selected_subjects.*' => 'integer|exists:subjects,id',
         ];
     }
 

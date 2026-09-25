@@ -10,6 +10,8 @@ use App\Repositories\LocationRepo;
 use App\Repositories\MyClassRepo;
 use App\Repositories\StudentRepo;
 use App\Repositories\UserRepo;
+use App\Models\StudentSubjectCombination;
+use App\Models\Subject;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -46,6 +48,7 @@ class StudentRecordController extends Controller
         $data['dorms'] = $this->student->getAllDorms();
         $data['states'] = $this->loc->getStates();
         $data['nationals'] = $this->loc->getAllNationals();
+        $data['subjects'] = $this->my_class->getAllSubjects();
         return view('pages.support_team.students.add', $data);
     }
 
@@ -81,6 +84,7 @@ class StudentRecordController extends Controller
         $sr['session'] = Qs::getSetting('current_session');
 
         $this->student->createRecord($sr); // Create Student
+        $this->saveSubjectCombination($user->id, $req->combination_level, $req->selected_subjects, $req->my_class_id);
         return Qs::jsonStoreOk();
     }
 
@@ -137,6 +141,7 @@ class StudentRecordController extends Controller
         $data['dorms'] = $this->student->getAllDorms();
         $data['states'] = $this->loc->getStates();
         $data['nationals'] = $this->loc->getAllNationals();
+        $data['subjects'] = $this->my_class->getAllSubjects();
         return view('pages.support_team.students.edit', $data);
     }
 
@@ -162,11 +167,23 @@ class StudentRecordController extends Controller
         $srec = $req->only(Qs::getStudentData());
 
         $this->student->updateRecord($sr_id, $srec); // Update St Rec
+        $this->saveSubjectCombination($sr->user->id, $req->combination_level, $req->selected_subjects, $srec['my_class_id']);
 
         /*** If Class/Section is Changed in Same Year, Delete Marks/ExamRecord of Previous Class/Section ****/
         Mk::deleteOldRecord($sr->user->id, $srec['my_class_id']);
 
         return Qs::jsonUpdateOk();
+    }
+
+    protected function saveSubjectCombination($student_id, $level, $subjects = [], $class_id = null)
+    {
+        if(!$level && !$subjects) { return; }
+        StudentSubjectCombination::where('student_id', $student_id)->delete();
+        if(!$level || !$subjects) { return; }
+        $subjects = Subject::where('my_class_id', $class_id)->whereIn('id', $subjects)->pluck('id')->all();
+        foreach(array_unique($subjects) as $subject_id) {
+            StudentSubjectCombination::create(['student_id' => $student_id, 'subject_id' => $subject_id, 'level' => $level]);
+        }
     }
 
     public function destroy($st_id)

@@ -2,12 +2,20 @@
 namespace App\Http\Controllers\SupportTeam;
 
 use App\Book;
+use App\Helpers\Qs;
 use App\Http\Controllers\Controller;
 use App\Models\MyClass;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            return in_array(Qs::getUserType(), ['admin', 'super_admin', 'librarian']) ? $next($request) : redirect()->route('dashboard');
+        });
+    }
+
     public function index()
     {
         return view('pages.support_team.library.books.index', ['books' => Book::with('my_class')->latest()->get()]);

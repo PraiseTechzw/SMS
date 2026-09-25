@@ -1,0 +1,5 @@
+@extends('layouts.master')
+@section('page_title', 'School Notices')
+@section('content')
+<div class="card"><div class="card-header header-elements-inline"><h5 class="card-title">School notices</h5><a href="{{ route('notices.create') }}" class="btn btn-primary">Create notice</a></div><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>Title</th><th>Audience</th><th>Published</th><th>Expires</th><th>Status</th><th>Action</th></tr></thead><tbody>@forelse($notices as $notice)<tr><td>{{ $notice->title }}</td><td>{{ ucfirst($notice->audience) }}</td><td>{{ optional($notice->published_at)->format('d M Y') ?: 'Immediately' }}</td><td>{{ optional($notice->expires_at)->format('d M Y') ?: 'No expiry' }}</td><td><span class="badge badge-{{ $notice->is_published ? 'success' : 'secondary' }}">{{ $notice->is_published ? 'Published' : 'Draft' }}</span></td><td><a href="{{ route('notices.edit', $notice) }}" class="btn btn-sm btn-light">Edit</a></td></tr>@empty<tr><td colspan="6" class="text-center text-muted py-4">No school notices have been created.</td></tr>@endforelse</tbody></table></div></div>
+@endsection
